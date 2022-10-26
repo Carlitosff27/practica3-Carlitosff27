@@ -39,17 +39,26 @@ public class Lyrics {
         }
 
         //Ejercicio 1 - Constructor
-        wordsPositions = ....;
-
+        wordsPositions = new TreeMap<>();
+        int j=1,n;
+        String palabra;
         while (sc.hasNextLine()) {
             //Lee la siguiente línea del fichero y la convierte en mayúscualas
             String line = sc.nextLine().toUpperCase(); 
 
             //Divide la línea en palabras
-            String[] words = line.split(" "); 
-
-            //.....
-
+            String[] words = line.split(" ");
+            for (int i=0;i<words.length;i++){
+                palabra=words[i];
+                n=(i==words.length-1?-1:1);
+                if (wordsPositions.isEmpty() || !wordsPositions.containsKey(palabra)){
+                    List<Integer>lista=new ArrayList<>();
+                    lista.add(j*n);
+                    wordsPositions.put(palabra,lista);
+                }else
+                    wordsPositions.get(palabra).add(j*n);
+                j++;
+            }
         }
         sc.close();
 
@@ -57,27 +66,34 @@ public class Lyrics {
 
     //Ejercicio 2: devuelve el número de palabras distintas
     public int differentWords() {
-
-        return 0;
+        return wordsPositions.size();
 
     }
 
     //Ejercicio 3: Devuelve el conjunto de palabras distintas ordenado alfabéticamente
     public Set<String> listWords() {
-
-        return null;
+        return wordsPositions.keySet();
     }
 
     //Ejercicio 4: Devuelve el número de palabras distintas en el texto
     public int totalWords() {
-
-        return 0;
+        int x=0;
+        Collection<List<Integer>>collection=wordsPositions.values();
+        for (List<Integer>y:collection)
+            x+=y.size();
+        return x;
     }
 
     //Ejercicio 5: Palabras usadas al menos n veces
     public Set<String> wordsUsedOver (int n) {
-
-        return null;
+        Set<String> palabras=new HashSet<>();
+        Set<String> key=wordsPositions.keySet();
+        for (String x:key){
+            if (wordsPositions.get(x).size()>=n){
+                palabras.add(x);
+            }
+        }
+        return palabras;
     }
 
     //Ejercicio 6: Devuelve el conjunto de palabras que se usan para terminar versos
@@ -106,3 +122,4 @@ public class Lyrics {
 
 
 }
+
